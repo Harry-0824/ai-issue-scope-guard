@@ -10,6 +10,9 @@
   --color-text-muted: #9eaeca;
   --color-accent: #7c5cff;
   --color-accent-strong: #39a7ff;
+  --color-success: #3ecf8e;
+  --color-warning: #f5b84a;
+  --color-danger: #ff5b6e;
 
   --shadow-soft: 0 24px 70px rgba(0, 0, 0, 0.32);
   --radius-md: 14px;
