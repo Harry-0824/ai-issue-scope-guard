@@ -1,4 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/vue'
+import { createPinia } from 'pinia'
+import { beforeEach, vi } from 'vitest'
 
 import App from './App.vue'
 import { router } from './router'
@@ -9,12 +11,17 @@ async function renderAppAt(path = '/') {
 
   return render(App, {
     global: {
-      plugins: [router],
+      plugins: [createPinia(), router],
     },
   })
 }
 
 describe('App routing', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    vi.clearAllMocks()
+  })
+
   it('renders the landing placeholder route', async () => {
     await renderAppAt('/')
 
@@ -24,11 +31,9 @@ describe('App routing', () => {
   it('navigates between placeholder pages from the header', async () => {
     await renderAppAt('/')
 
-    // Vue Router 會在同一個 SPA shell 內切換 RouterView，這裡測的是導覽資料流而不是完整 UI。
+    // Vue Router 讓 SPA shell 保持不變，只替換 RouterView 對應的頁面內容。
     await fireEvent.click(screen.getByRole('link', { name: 'Scope Checker' }))
-    expect(
-      await screen.findByRole('heading', { name: 'Scope 分析工作區' }),
-    ).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Scope 分析工作區' })).toBeInTheDocument()
 
     await fireEvent.click(screen.getByRole('link', { name: '規則說明' }))
     expect(
@@ -36,7 +41,7 @@ describe('App routing', () => {
     ).toBeInTheDocument()
   })
 
-  it('loads demo data, displays analysis results, and copies the PR comment', async () => {
+  it('loads demo data, displays analysis results, copies the PR comment, and clears state', async () => {
     await renderAppAt('/checker')
 
     await fireEvent.click(screen.getByRole('button', { name: 'Good PR' }))
@@ -62,5 +67,9 @@ describe('App routing', () => {
     expect(screen.getByText('0')).toBeInTheDocument()
     expect(screen.getAllByText('High Risk').length).toBeGreaterThan(0)
     expect(screen.getByText('Request Changes')).toBeInTheDocument()
+
+    await fireEvent.click(screen.getByRole('button', { name: 'Clear' }))
+    expect((screen.getByLabelText('Issue Spec') as HTMLTextAreaElement).value).toBe('')
+    expect(screen.getByText('Load example')).toBeInTheDocument()
   })
 })
