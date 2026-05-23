@@ -43,7 +43,7 @@ describe('App routing', () => {
     expect((screen.getByLabelText('Issue Spec') as HTMLTextAreaElement).value).toContain('Issue #12')
 
     await fireEvent.click(screen.getByRole('button', { name: '開始分析' }))
-    expect(screen.getByText('96')).toBeInTheDocument()
+    expect(screen.getByText('100')).toBeInTheDocument()
     expect(screen.getAllByText('Low Risk').length).toBeGreaterThan(0)
     expect(screen.getByText('Ready to Review')).toBeInTheDocument()
 
@@ -59,7 +59,7 @@ describe('App routing', () => {
     )
 
     await fireEvent.click(screen.getByRole('button', { name: '開始分析' }))
-    expect(screen.getByText('42')).toBeInTheDocument()
+    expect(screen.getByText('0')).toBeInTheDocument()
     expect(screen.getAllByText('High Risk').length).toBeGreaterThan(0)
     expect(screen.getByText('Request Changes')).toBeInTheDocument()
   })

@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import type { DemoAnalysisResult } from '@/data/checkerExamples'
+import type { AnalysisResult } from '@/types/analysis'
 import AppBadge from '@/components/ui/AppBadge.vue'
 import AppCard from '@/components/ui/AppCard.vue'
 import SectionHeader from '@/components/ui/SectionHeader.vue'
@@ -31,7 +31,7 @@ import AnalysisSummaryCards from './AnalysisSummaryCards.vue'
 import CheckResultItem from './CheckResultItem.vue'
 
 defineProps<{
-  result: DemoAnalysisResult | null
+  result: AnalysisResult | null
 }>()
 </script>
 

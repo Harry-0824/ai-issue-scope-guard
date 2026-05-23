@@ -11,11 +11,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import type { DemoCheckResult } from '@/data/checkerExamples'
 import AppBadge from '@/components/ui/AppBadge.vue'
+import type { AnalysisCheckResult } from '@/types/analysis'
 
 const props = defineProps<{
-  result: DemoCheckResult
+  result: AnalysisCheckResult
 }>()
 
 // computed 讓 badge 顯示文字由 result.status 衍生而來；狀態改變時 template 會自動更新。

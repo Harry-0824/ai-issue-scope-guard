@@ -41,18 +41,18 @@ import CheckResultsPanel from '@/components/checker/CheckResultsPanel.vue'
 import CopyablePrComment from '@/components/checker/CopyablePrComment.vue'
 import ReviewSummaryCard from '@/components/checker/ReviewSummaryCard.vue'
 import RuleDetailsPanel from '@/components/checker/RuleDetailsPanel.vue'
+import { analyzeScope } from '@/services/analyzer'
+import type { AnalysisResult } from '@/types/analysis'
 import {
   checkerExamples,
-  demoAnalysisResults,
   emptyCheckerInput,
   type CheckerExampleKey,
   type CheckerInput,
-  type DemoAnalysisResult,
 } from '@/data/checkerExamples'
 
 const input = reactive<CheckerInput>({ ...emptyCheckerInput })
 const selectedExample = ref<CheckerExampleKey | null>(null)
-const activeResult = ref<DemoAnalysisResult | null>(null)
+const activeResult = ref<AnalysisResult | null>(null)
 const copyStatus = ref('')
 
 function loadExample(example: CheckerExampleKey) {
@@ -71,8 +71,8 @@ function updateField(field: keyof CheckerInput, value: string) {
 }
 
 function analyze() {
-  const example = selectedExample.value ?? 'good'
-  activeResult.value = demoAnalysisResults[example]
+  // Analyzer 是純函式；這裡只把目前表單 state 複製成一般物件，避免服務層依賴 Vue reactive。
+  activeResult.value = analyzeScope({ ...input })
   copyStatus.value = ''
 }
 
