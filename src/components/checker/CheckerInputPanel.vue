@@ -4,7 +4,7 @@
       <SectionHeader
         eyebrow="Manual Input"
         title="貼上 Issue / PR 資訊"
-        description="先用固定 demo data 驗證工作區互動，完整 analyzer 留給後續 Issue。"
+        description="使用 demo data 或手動輸入，透過 store 執行 analyzer 並保存最後一次分析。"
       />
       <ExampleSwitcher :selected-example="selectedExample" @load-example="$emit('load-example', $event)" />
     </div>
@@ -22,9 +22,14 @@
       />
     </div>
 
-    <AppButton class="checker-input-panel__action" @click="$emit('analyze')">
-      開始分析
-    </AppButton>
+    <div class="checker-input-panel__actions">
+      <AppButton class="checker-input-panel__action" @click="$emit('analyze')">
+        開始分析
+      </AppButton>
+      <AppButton variant="secondary" class="checker-input-panel__action" @click="$emit('clear')">
+        Clear
+      </AppButton>
+    </div>
   </AppCard>
 </template>
 
@@ -54,6 +59,7 @@ defineEmits<{
   'load-example': [example: CheckerExampleKey]
   'update-field': [field: keyof CheckerInput, value: string]
   analyze: []
+  clear: []
 }>()
 
 const fields: FieldConfig[] = [
@@ -89,7 +95,7 @@ const fields: FieldConfig[] = [
     key: 'dependencyChanges',
     id: 'dependency-changes',
     label: 'Dependency Changes',
-    placeholder: '貼上 dependency/package 變更狀態...',
+    placeholder: '貼上 dependency/package 變更說明...',
     rows: 4,
   },
 ]
@@ -112,7 +118,19 @@ const fields: FieldConfig[] = [
   gap: 18px;
 }
 
+.checker-input-panel__actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+}
+
 .checker-input-panel__action {
   width: 100%;
+}
+
+@media (max-width: 520px) {
+  .checker-input-panel__actions {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

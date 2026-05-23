@@ -5,7 +5,7 @@
       <div>
         <h1>Scope 分析工作區</h1>
         <p>
-          貼上 Issue 與 PR 資訊，使用 Good PR / Risky PR demo 驗證基本互動與結果呈現。
+          貼上 Issue 與 PR 資訊，使用 Good PR / Risky PR demo 驗證 analyzer、Pinia state 與 latest-only persistence。
         </p>
       </div>
     </div>
@@ -17,6 +17,7 @@
         @load-example="loadExample"
         @update-field="updateField"
         @analyze="analyze"
+        @clear="clearCurrentState"
       />
 
       <div class="checker-page__results">
@@ -34,51 +35,49 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { storeToRefs } from 'pinia'
 
 import CheckerInputPanel from '@/components/checker/CheckerInputPanel.vue'
 import CheckResultsPanel from '@/components/checker/CheckResultsPanel.vue'
 import CopyablePrComment from '@/components/checker/CopyablePrComment.vue'
 import ReviewSummaryCard from '@/components/checker/ReviewSummaryCard.vue'
 import RuleDetailsPanel from '@/components/checker/RuleDetailsPanel.vue'
-import { analyzeScope } from '@/services/analyzer'
-import type { AnalysisResult } from '@/types/analysis'
-import {
-  checkerExamples,
-  emptyCheckerInput,
-  type CheckerExampleKey,
-  type CheckerInput,
-} from '@/data/checkerExamples'
+import { useAnalysisStore } from '@/stores/analysisStore'
+import type { CheckerExampleKey, CheckerInput } from '@/data/checkerExamples'
 
-const input = reactive<CheckerInput>({ ...emptyCheckerInput })
-const selectedExample = ref<CheckerExampleKey | null>(null)
-const activeResult = ref<AnalysisResult | null>(null)
+const analysisStore = useAnalysisStore()
+const { input, selectedExample, activeResult } = storeToRefs(analysisStore)
 const copyStatus = ref('')
 
-function loadExample(example: CheckerExampleKey) {
-  selectedExample.value = example
-  activeResult.value = null
-  copyStatus.value = ''
+onMounted(() => {
+  // 頁面載入時才 restore latest analysis，避免 component 直接碰 localStorage。
+  analysisStore.loadLastAnalysis()
+})
 
-  // reactive 物件不能直接整個換掉，否則 template 既有引用會斷開；逐欄位賦值能保留 Vue 的 reactivity。
-  Object.assign(input, checkerExamples[example])
+function loadExample(example: CheckerExampleKey) {
+  analysisStore.loadExample(example)
+  copyStatus.value = ''
 }
 
 function updateField(field: keyof CheckerInput, value: string) {
-  // 子元件用 emit 把欄位變更交回頁面，讓資料來源維持單向：page state -> props -> child UI。
-  input[field] = value
+  analysisStore.updateField(field, value)
   copyStatus.value = ''
 }
 
 function analyze() {
-  // Analyzer 是純函式；這裡只把目前表單 state 複製成一般物件，避免服務層依賴 Vue reactive。
-  activeResult.value = analyzeScope({ ...input })
+  analysisStore.runAnalyzer()
+  copyStatus.value = ''
+}
+
+function clearCurrentState() {
+  analysisStore.clearCurrentState()
   copyStatus.value = ''
 }
 
 async function copyPrComment() {
   if (!activeResult.value?.prComment) {
-    copyStatus.value = '請先產生 demo 分析結果。'
+    copyStatus.value = '請先產生分析結果。'
     return
   }
 
