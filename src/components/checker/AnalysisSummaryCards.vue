@@ -16,10 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import type { DemoAnalysisResult } from '@/data/checkerExamples'
+import type { AnalysisResult } from '@/types/analysis'
 
 defineProps<{
-  result: DemoAnalysisResult | null
+  result: AnalysisResult | null
 }>()
 </script>
 

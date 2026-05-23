@@ -17,13 +17,13 @@
 </template>
 
 <script setup lang="ts">
-import type { DemoRuleDetail } from '@/data/checkerExamples'
 import AppBadge from '@/components/ui/AppBadge.vue'
 import AppCard from '@/components/ui/AppCard.vue'
 import SectionHeader from '@/components/ui/SectionHeader.vue'
+import type { AnalysisRuleDetail } from '@/types/analysis'
 
 defineProps<{
-  rules: DemoRuleDetail[]
+  rules: AnalysisRuleDetail[]
 }>()
 </script>
 
