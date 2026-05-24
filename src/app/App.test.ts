@@ -41,6 +41,22 @@ describe('App routing', () => {
     ).toBeInTheDocument()
   })
 
+  it('renders the rule explanation page content', async () => {
+    await renderAppAt('/rules')
+
+    expect(screen.getByRole('heading', { name: 'Rule-based Analyzer 規則說明' })).toBeInTheDocument()
+    expect(screen.getByText(/MVP 是 rule-based 且 local-only/)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Scope Match Score logic' })).toBeInTheDocument()
+    expect(screen.getByText(/Base score 從 100 分開始/)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Score deduction rules' })).toBeInTheDocument()
+    expect(screen.getByText('90-100 = Low Risk / Ready to Review')).toBeInTheDocument()
+    expect(screen.getByText('Scope Alignment')).toBeInTheDocument()
+    expect(screen.getByText('manual paste only')).toBeInTheDocument()
+    expect(screen.getByText('no GitHub API')).toBeInTheDocument()
+    expect(screen.getByText('OpenRouter')).toBeInTheDocument()
+    expect(screen.getByText('database-ready architecture')).toBeInTheDocument()
+  })
+
   it('loads demo data, displays analysis results, copies the PR comment, and clears state', async () => {
     await renderAppAt('/checker')
 
