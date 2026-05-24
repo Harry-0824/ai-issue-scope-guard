@@ -1,14 +1,20 @@
 <template>
-  <button class="app-button" :class="`app-button--${variant}`" :type="type">
+  <RouterLink v-if="to" class="app-button" :class="`app-button--${variant}`" :to="to">
+    <slot />
+  </RouterLink>
+  <button v-else class="app-button" :class="`app-button--${variant}`" :type="type">
     <slot />
   </button>
 </template>
 
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
+
 withDefaults(
   defineProps<{
     variant?: 'primary' | 'secondary' | 'ghost'
     type?: 'button' | 'submit' | 'reset'
+    to?: string
   }>(),
   {
     variant: 'primary',
@@ -19,6 +25,9 @@ withDefaults(
 
 <style scoped>
 .app-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 42px;
   border: 1px solid transparent;
   border-radius: var(--radius-md);
@@ -27,6 +36,9 @@ withDefaults(
   background: transparent;
   font-size: 0.92rem;
   font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
   cursor: pointer;
   transition:
     border-color 160ms ease,

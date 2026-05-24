@@ -22,10 +22,30 @@ describe('App routing', () => {
     vi.clearAllMocks()
   })
 
-  it('renders the landing placeholder route', async () => {
+  it('renders the landing page content and navigates through landing CTAs', async () => {
     await renderAppAt('/')
 
     expect(screen.getByRole('heading', { name: 'AI Issue Scope Guard' })).toBeInTheDocument()
+    expect(screen.getByText(/檢查 AI-generated PR 是否守住 GitHub Issue scope/)).toBeInTheDocument()
+    expect(screen.getByText('Scope 檢查')).toBeInTheDocument()
+    expect(screen.getByText('Risk Level')).toBeInTheDocument()
+    expect(screen.getByText('可複製 PR 評語')).toBeInTheDocument()
+    expect(screen.getByText('Local save / 最後一次分析保存')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'AI-assisted development workflow' })).toBeInTheDocument()
+    expect(screen.getByText('Codex / AI Agent 實作')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Future extension' })).toBeInTheDocument()
+    expect(screen.getByText('database-ready architecture')).toBeInTheDocument()
+
+    await fireEvent.click(screen.getByRole('link', { name: '開始 Scope 檢查' }))
+    expect(await screen.findByRole('heading', { name: 'Scope 分析工作區' })).toBeInTheDocument()
+
+    await fireEvent.click(screen.getByRole('link', { name: '首頁' }))
+    expect(await screen.findByRole('heading', { name: 'AI Issue Scope Guard' })).toBeInTheDocument()
+
+    await fireEvent.click(screen.getByRole('link', { name: '查看規則說明' }))
+    expect(
+      await screen.findByRole('heading', { name: 'Rule-based Analyzer 規則說明' }),
+    ).toBeInTheDocument()
   })
 
   it('navigates between placeholder pages from the header', async () => {
