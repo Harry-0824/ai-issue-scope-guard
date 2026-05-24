@@ -80,6 +80,8 @@ describe('App routing', () => {
   it('loads demo data, displays analysis results, copies the PR comment, and clears state', async () => {
     await renderAppAt('/checker')
 
+    expect(screen.getByRole('button', { name: '複製 PR 評語' })).toBeInTheDocument()
+
     await fireEvent.click(screen.getByRole('button', { name: 'Good PR' }))
     expect((screen.getByLabelText('Issue Spec') as HTMLTextAreaElement).value).toContain('Issue #12')
 
