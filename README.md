@@ -62,7 +62,7 @@ Netlify deployment should be done manually outside Codex. Do not commit Netlify 
 
 ## Live Demo
 
-Live demo: TBD after manual Netlify deployment.
+Live demo: https://monumental-fudge-3c2f38.netlify.app/
 
 ## Architecture Note
 
