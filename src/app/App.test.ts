@@ -82,6 +82,15 @@ describe('App routing', () => {
 
     expect(screen.getByRole('button', { name: '複製 PR 評語' })).toBeInTheDocument()
     expect(screen.queryByText('審查結論')).not.toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText('貼上 GitHub Issue 內容，例如 Goal、Scope、Out of Scope、Acceptance Criteria。'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText('貼上 PR Summary，例如實作內容、修改原因、驗證方式。'),
+    ).toBeInTheDocument()
+    expect(screen.getByText('建議每行貼上一個 changed file，讓檔案範圍更容易檢查。')).toBeInTheDocument()
+    expect(screen.getByText('請貼上實際指令結果；如果沒有執行，請明確寫出原因。')).toBeInTheDocument()
+    expect(screen.getByText('請明確寫出是否有 dependency 變更，避免 reviewer 需要猜測。')).toBeInTheDocument()
 
     await fireEvent.click(screen.getByRole('button', { name: '良好 PR 範例' }))
     expect((screen.getByLabelText('Issue 任務範圍') as HTMLTextAreaElement).value).toContain('Issue #12')
