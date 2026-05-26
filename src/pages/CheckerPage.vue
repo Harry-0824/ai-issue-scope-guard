@@ -5,7 +5,8 @@
       <div>
         <h1>範圍檢查工作區</h1>
         <p>
-          貼上 Issue 與 PR 資訊，載入良好或高風險 PR 範例，檢查 analyzer、Pinia state 與只保存最新分析的結果。
+          貼上 Issue 與 PR 資訊，載入良好或高風險 PR 範例，檢查 analyzer、Pinia
+          state 與只保存最新分析的結果。
         </p>
       </div>
     </div>

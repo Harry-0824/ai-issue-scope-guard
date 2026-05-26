@@ -4,8 +4,8 @@
       <p class="rules-page__eyebrow">規則</p>
       <h1>Rule-based Analyzer 檢查規則</h1>
       <p>
-        MVP 是 rule-based 且 local-only。它只分析使用者手動貼上的 Issue / PR 資訊，不會呼叫 AI API、
-        GitHub API 或資料庫。
+        MVP 是 rule-based 且 local-only。它只分析使用者手動貼上的 Issue / PR
+        資訊，不會呼叫 AI API、 GitHub API 或資料庫。
       </p>
       <div class="rules-page__badges" aria-label="MVP analyzer 狀態">
         <AppBadge tone="success">僅本機分析</AppBadge>
@@ -22,7 +22,8 @@
           description="Scope Guard 目前使用 deterministic rules，把 Issue 任務範圍、PR 摘要、變更檔案、build / test 結果與 dependency changes 轉成可讀的審查訊號。"
         />
         <p>
-          這不是 AI 判斷，也不是 GitHub diff parser。它的定位是幫審查者快速發現明顯超出 Issue 任務範圍的變更，
+          這不是 AI 判斷，也不是 GitHub diff
+          parser。它的定位是幫審查者快速發現明顯超出 Issue 任務範圍的變更，
           並產生可複製回 PR 的審查評語。
         </p>
       </AppCard>
@@ -34,7 +35,10 @@
           description="Base score 從 100 分開始，再根據每個風險訊號扣分。"
         />
         <strong>{{ analyzerConfig.baseScore }}</strong>
-        <p>Final score 會 clamp 在 0 到 100 之間，避免多個風險訊號讓分數超出可讀範圍。</p>
+        <p>
+          Final score 會 clamp 在 0 到 100
+          之間，避免多個風險訊號讓分數超出可讀範圍。
+        </p>
       </AppCard>
     </div>
 
@@ -45,7 +49,11 @@
         description="目前扣分只反映 MVP rule signals，不代表完整 code review 結論。"
       />
       <div class="rules-page__deductions">
-        <article v-for="rule in deductionRules" :key="rule.label" class="rules-page__deduction">
+        <article
+          v-for="rule in deductionRules"
+          :key="rule.label"
+          class="rules-page__deduction"
+        >
           <span>{{ rule.label }}</span>
           <strong>-{{ rule.points }}</strong>
           <p>{{ rule.description }}</p>
@@ -60,9 +68,15 @@
         description="Score 會映射到審查者可以直接採取的建議動作。"
       />
       <div class="rules-page__mapping">
-        <article v-for="item in riskMapping" :key="item.range" class="rules-page__mapping-item">
+        <article
+          v-for="item in riskMapping"
+          :key="item.range"
+          class="rules-page__mapping-item"
+        >
           <AppBadge :tone="item.tone">{{ item.risk }}</AppBadge>
-          <strong>{{ item.range }} = {{ item.risk }} / {{ item.action }}</strong>
+          <strong
+            >{{ item.range }} = {{ item.risk }} / {{ item.action }}</strong
+          >
           <p>{{ item.description }}</p>
         </article>
       </div>
@@ -76,7 +90,11 @@
           description="這些是目前 analyzer 會回傳在檢查結果與規則細節的項目。"
         />
         <div class="rules-page__check-list">
-          <article v-for="check in checkItems" :key="check.title" class="rules-page__check-item">
+          <article
+            v-for="check in checkItems"
+            :key="check.title"
+            class="rules-page__check-item"
+          >
             <h3>{{ check.title }}</h3>
             <p>{{ check.description }}</p>
           </article>
@@ -90,7 +108,9 @@
           description="這些限制是刻意保留的 MVP 邊界，避免把工具誤解成完整自動化審查系統。"
         />
         <ul class="rules-page__plain-list">
-          <li v-for="limitation in limitations" :key="limitation">{{ limitation }}</li>
+          <li v-for="limitation in limitations" :key="limitation">
+            {{ limitation }}
+          </li>
         </ul>
       </AppCard>
     </div>
@@ -102,7 +122,11 @@
         description="以下項目只是後續方向，尚未在 MVP 中實作。"
       />
       <div class="rules-page__roadmap">
-        <article v-for="item in roadmap" :key="item.title" class="rules-page__roadmap-item">
+        <article
+          v-for="item in roadmap"
+          :key="item.title"
+          class="rules-page__roadmap-item"
+        >
           <AppBadge>{{ item.status }}</AppBadge>
           <h3>{{ item.title }}</h3>
           <p>{{ item.description }}</p>
@@ -112,8 +136,8 @@
 
     <footer class="rules-page__footer">
       <p>
-        `/rules` 的責任是說明目前 rule-based analyzer 的行為與限制；實際 PR 判斷仍應由審查者
-        對照 Issue 任務範圍與完整 diff。
+        `/rules` 的責任是說明目前 rule-based analyzer 的行為與限制；實際 PR
+        判斷仍應由審查者 對照 Issue 任務範圍與完整 diff。
       </p>
     </footer>
   </section>
@@ -136,7 +160,8 @@ const deductionRules = [
   {
     label: '任務範圍衝突',
     points: analyzerConfig.deductions.scopeConflict,
-    description: 'PR 內容碰到 Issue 明確禁止的範圍，例如 auth、deployment、database 或 package 變更。',
+    description:
+      'PR 內容碰到 Issue 明確禁止的範圍，例如 auth、deployment、database 或 package 變更。',
   },
   {
     label: '缺少變更檔案',
@@ -146,17 +171,20 @@ const deductionRules = [
   {
     label: '高風險變更檔案',
     points: analyzerConfig.deductions.riskyChangedFiles,
-    description: '偵測到 package、deployment、auth、service 或 local config 類型檔案。',
+    description:
+      '偵測到 package、deployment、auth、service 或 local config 類型檔案。',
   },
   {
     label: 'Dependency 變更風險',
     points: analyzerConfig.deductions.dependencyWarning,
-    description: 'Dependency 變更或 package files 顯示可能新增或改動 dependency。',
+    description:
+      'Dependency 變更或 package files 顯示可能新增或改動 dependency。',
   },
   {
     label: 'Secret / 本機設定風險',
     points: analyzerConfig.deductions.secretRisk,
-    description: 'PR 提供的資訊包含 .env、token、credential、password 或 API key 類型訊號。',
+    description:
+      'PR 提供的資訊包含 .env、token、credential、password 或 API key 類型訊號。',
   },
   {
     label: '缺少 build / test 訊號',
@@ -196,7 +224,8 @@ const riskMapping: Array<{
     risk: '高風險',
     action: '建議要求修改',
     tone: 'danger',
-    description: '可能超出 Issue 任務範圍，或碰到 secrets/local config、deployment、package 等高風險變更。',
+    description:
+      '可能超出 Issue 任務範圍，或碰到 secrets/local config、deployment、package 等高風險變更。',
   },
 ]
 
@@ -207,23 +236,33 @@ const checkItems = [
   },
   {
     title: '變更檔案範圍',
-    description: '檢查檔案清單是否包含 package、deployment、auth、service 或 local config 類型路徑。',
+    description:
+      '檢查檔案清單是否包含 package、deployment、auth、service 或 local config 類型路徑。',
   },
   {
     title: 'Dependency 變更風險',
-    description: '檢查是否有 package files 或 dependency changes，避免小 Issue 偷渡 dependency work。',
+    description:
+      '檢查是否有 package files 或 dependency changes，避免小 Issue 偷渡 dependency work。',
   },
   {
     title: 'Secret / 本機設定風險',
-    description: '檢查 PR 資訊是否出現 .env、token、credential、password 或 API-key-like 訊號。',
+    description:
+      '檢查 PR 資訊是否出現 .env、token、credential、password 或 API-key-like 訊號。',
   },
   {
     title: 'build / test 驗證訊號',
-    description: '檢查 build / test 結果是否提供 pass/build verified 訊號，或是否明確說 tests 未執行。',
+    description:
+      '檢查 build / test 結果是否提供 pass/build verified 訊號，或是否明確說 tests 未執行。',
   },
 ]
 
-const limitations = ['僅支援手動貼上', 'no GitHub API', 'no AI API', 'no database', '僅保存最新本機分析']
+const limitations = [
+  '僅支援手動貼上',
+  'no GitHub API',
+  'no AI API',
+  'no database',
+  '僅保存最新本機分析',
+]
 
 const roadmap = [
   {
@@ -239,7 +278,8 @@ const roadmap = [
   {
     title: 'OpenAI',
     status: '未來',
-    description: '未來若加入 AI API，需透過獨立 Issue 與安全的 backend/proxy 設計。',
+    description:
+      '未來若加入 AI API，需透過獨立 Issue 與安全的 backend/proxy 設計。',
   },
   {
     title: 'Gemini',

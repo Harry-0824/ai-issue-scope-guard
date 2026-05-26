@@ -1,6 +1,10 @@
 <template>
   <header class="app-header">
-    <RouterLink class="app-header__brand" to="/" aria-label="AI Issue Scope Guard 首頁">
+    <RouterLink
+      class="app-header__brand"
+      to="/"
+      aria-label="AI Issue Scope Guard 首頁"
+    >
       AI Issue Scope Guard
     </RouterLink>
 

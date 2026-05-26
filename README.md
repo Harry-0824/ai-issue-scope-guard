@@ -49,12 +49,16 @@ npm run dev
 npm run build
 npm run preview
 npm run test
+npm run format
+npm run format:check
 ```
 
 - `npm run dev`：啟動本機開發伺服器。
 - `npm run build`：執行 TypeScript build checks，並產生 production `dist` output。
 - `npm run preview`：在本機預覽 production build。請先執行 `npm run build`。
 - `npm run test`：執行 Vitest test suite。
+- `npm run format`：使用 Prettier 格式化專案檔案。
+- `npm run format:check`：檢查專案格式是否符合 Prettier 設定（不寫入檔案）。
 
 ## 部署說明
 

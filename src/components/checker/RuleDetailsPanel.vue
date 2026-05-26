@@ -2,7 +2,11 @@
   <AppCard class="rule-details-panel">
     <SectionHeader eyebrow="規則細節" title="規則細節" />
     <div v-if="rules.length" class="rule-details-panel__list">
-      <article v-for="rule in rules" :key="rule.id" class="rule-details-panel__item">
+      <article
+        v-for="rule in rules"
+        :key="rule.id"
+        class="rule-details-panel__item"
+      >
         <div>
           <h4>{{ rule.label }}</h4>
           <p>{{ rule.reason }}</p>

@@ -41,31 +41,31 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed } from 'vue'
 
-import type { AnalysisResult } from "@/types/analysis";
-import AppBadge from "@/components/ui/AppBadge.vue";
-import AppCard from "@/components/ui/AppCard.vue";
-import SectionHeader from "@/components/ui/SectionHeader.vue";
+import type { AnalysisResult } from '@/types/analysis'
+import AppBadge from '@/components/ui/AppBadge.vue'
+import AppCard from '@/components/ui/AppCard.vue'
+import SectionHeader from '@/components/ui/SectionHeader.vue'
 
-import AnalysisSummaryCards from "./AnalysisSummaryCards.vue";
-import CheckResultItem from "./CheckResultItem.vue";
+import AnalysisSummaryCards from './AnalysisSummaryCards.vue'
+import CheckResultItem from './CheckResultItem.vue'
 
 const props = defineProps<{
-  result: AnalysisResult | null;
-}>();
+  result: AnalysisResult | null
+}>()
 
 const groupDefinitions = [
-  { status: "danger", label: "高風險" },
-  { status: "warning", label: "需人工確認" },
-  { status: "pass", label: "已通過" },
-] as const;
+  { status: 'danger', label: '高風險' },
+  { status: 'warning', label: '需人工確認' },
+  { status: 'pass', label: '已通過' },
+] as const
 
 // computed 會從目前分析結果即時衍生顯示分組；維持 presentation-only，不改 analyzer 輸出內容。
 const groupedCheckResults = computed(() => {
-  const result = props.result;
+  const result = props.result
   if (!result) {
-    return [];
+    return []
   }
 
   return groupDefinitions
@@ -73,8 +73,8 @@ const groupedCheckResults = computed(() => {
       ...group,
       items: result.checkResults.filter((item) => item.status === group.status),
     }))
-    .filter((group) => group.items.length > 0);
-});
+    .filter((group) => group.items.length > 0)
+})
 </script>
 
 <style scoped>
