@@ -21,6 +21,7 @@
       />
 
       <div class="checker-page__results">
+        <ReviewVerdictCard v-if="activeResult" :result="activeResult" />
         <CheckResultsPanel :result="activeResult" />
         <ReviewSummaryCard :summary="activeResult?.reviewSummary ?? ''" />
         <CopyablePrComment
@@ -42,6 +43,7 @@ import CheckerInputPanel from '@/components/checker/CheckerInputPanel.vue'
 import CheckResultsPanel from '@/components/checker/CheckResultsPanel.vue'
 import CopyablePrComment from '@/components/checker/CopyablePrComment.vue'
 import ReviewSummaryCard from '@/components/checker/ReviewSummaryCard.vue'
+import ReviewVerdictCard from '@/components/checker/ReviewVerdictCard.vue'
 import RuleDetailsPanel from '@/components/checker/RuleDetailsPanel.vue'
 import { useAnalysisStore } from '@/stores/analysisStore'
 import type { CheckerExampleKey, CheckerInput } from '@/data/checkerExamples'
