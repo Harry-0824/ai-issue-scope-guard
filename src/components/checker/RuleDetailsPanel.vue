@@ -1,6 +1,6 @@
 <template>
   <AppCard class="rule-details-panel">
-    <SectionHeader eyebrow="Rule Details" title="規則細節" />
+    <SectionHeader eyebrow="規則細節" title="規則細節" />
     <div v-if="rules.length" class="rule-details-panel__list">
       <article v-for="rule in rules" :key="rule.id" class="rule-details-panel__item">
         <div>
@@ -8,11 +8,11 @@
           <p>{{ rule.reason }}</p>
         </div>
         <AppBadge :tone="rule.matched ? 'success' : 'danger'">
-          {{ rule.matched ? 'Matched' : 'Needs Review' }}
+          {{ rule.matched ? '符合' : '需確認' }}
         </AppBadge>
       </article>
     </div>
-    <p v-else class="rule-details-panel__empty">尚未產生 rule details。</p>
+    <p v-else class="rule-details-panel__empty">尚未產生規則細節。</p>
   </AppCard>
 </template>
 

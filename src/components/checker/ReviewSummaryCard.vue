@@ -1,7 +1,7 @@
 <template>
   <AppCard class="review-summary-card">
-    <SectionHeader eyebrow="Review Summary" title="審查摘要" />
-    <p>{{ summary || '尚未產生 demo review summary。' }}</p>
+    <SectionHeader eyebrow="審查摘要" title="審查摘要" />
+    <p>{{ summary || '尚未產生審查摘要。' }}</p>
   </AppCard>
 </template>
 

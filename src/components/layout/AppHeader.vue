@@ -24,7 +24,7 @@ import { RouterLink } from 'vue-router'
 // 導覽資料集中在陣列中，未來新增頁面時可以避免複製三段相同的 markup。
 const navItems = [
   { to: '/', label: '首頁' },
-  { to: '/checker', label: 'Scope Checker' },
+  { to: '/checker', label: '範圍檢查' },
   { to: '/rules', label: '規則說明' },
 ]
 </script>

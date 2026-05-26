@@ -1,12 +1,12 @@
 <template>
   <AppCard class="copyable-pr-comment">
     <div class="copyable-pr-comment__header">
-      <SectionHeader eyebrow="Copyable PR Comment" title="可複製 PR 評語" />
+      <SectionHeader eyebrow="PR 評語" title="可複製的 PR 評語" />
       <AppButton variant="secondary" @click="$emit('copy-comment')">
         複製 PR 評語
       </AppButton>
     </div>
-    <pre>{{ comment || '尚未產生可複製評語。' }}</pre>
+    <pre>{{ comment || '尚未產生可複製的 PR 評語。' }}</pre>
     <p v-if="copyStatus" class="copyable-pr-comment__status">{{ copyStatus }}</p>
   </AppCard>
 </template>

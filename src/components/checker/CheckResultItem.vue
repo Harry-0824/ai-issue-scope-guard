@@ -20,9 +20,9 @@ const props = defineProps<{
 
 // computed 讓 badge 顯示文字由 result.status 衍生而來；狀態改變時 template 會自動更新。
 const badgeText = computed(() => {
-  if (props.result.status === 'pass') return 'Pass'
-  if (props.result.status === 'warning') return 'Review'
-  return 'Risk'
+  if (props.result.status === 'pass') return '通過'
+  if (props.result.status === 'warning') return '需確認'
+  return '風險'
 })
 
 const badgeTone = computed(() => {

@@ -2,9 +2,9 @@
   <AppCard class="check-results-panel">
     <div class="check-results-panel__header">
       <SectionHeader
-        eyebrow="Panel / Analysis Results"
+        eyebrow="分析結果"
         title="分析結果"
-        description="目前顯示固定 demo 結果；完整 rule-based analyzer 尚未接入。"
+        description="依照目前貼上的 Issue / PR 資訊，顯示 rule-based analyzer 的檢查結果。"
       />
       <AppBadge v-if="result" :tone="result.riskTone">{{ result.riskLabel }}</AppBadge>
     </div>
@@ -16,7 +16,7 @@
     </div>
 
     <p v-else class="check-results-panel__empty">
-      載入 Good PR 或 Risky PR 範例後，點擊「開始分析」查看 demo 結果。
+      載入「良好 PR 範例」或「高風險 PR 範例」後，點擊「開始分析」查看結果。
     </p>
   </AppCard>
 </template>

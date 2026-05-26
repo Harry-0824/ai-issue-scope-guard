@@ -1,16 +1,16 @@
 <template>
   <div class="analysis-summary-cards">
     <div class="analysis-summary-cards__card">
-      <span>Scope Match Score</span>
+      <span>範圍符合度分數</span>
       <strong>{{ result?.score ?? '--' }}</strong>
     </div>
     <div class="analysis-summary-cards__card">
-      <span>Risk Level</span>
-      <strong>{{ result?.riskLabel ?? 'Not analyzed' }}</strong>
+      <span>風險等級</span>
+      <strong>{{ result?.riskLabel ?? '尚未分析' }}</strong>
     </div>
     <div class="analysis-summary-cards__card">
-      <span>Suggested Action</span>
-      <strong>{{ result?.suggestedAction ?? 'Load example' }}</strong>
+      <span>建議處理方式</span>
+      <strong>{{ result?.suggestedAction ?? '請先載入範例或開始分析' }}</strong>
     </div>
   </div>
 </template>

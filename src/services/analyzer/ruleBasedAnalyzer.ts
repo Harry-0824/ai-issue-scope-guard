@@ -7,11 +7,11 @@ type RuleEvaluation = {
 }
 
 const ruleLabels: Record<AnalyzerRuleId, string> = {
-  'scope-alignment': 'Scope Alignment',
-  'changed-files': 'Changed Files',
-  'dependency-risk': 'Dependency Risk',
-  'secret-risk': 'Secret Risk',
-  'test-coverage': 'Test Coverage Signal',
+  'scope-alignment': 'Issue 任務範圍對齊',
+  'changed-files': '變更檔案範圍',
+  'dependency-risk': 'Dependency 變更風險',
+  'secret-risk': 'Secret / 本機設定風險',
+  'test-coverage': 'build / test 驗證訊號',
 }
 
 export function analyzeScope(input: AnalyzerInput): AnalysisResult {
@@ -74,7 +74,7 @@ function evaluateScopeAlignment(input: ReturnType<typeof normalizeInput>): RuleE
       'warning',
       -analyzerConfig.deductions.missingScopeInput,
       false,
-      'Issue Spec or PR Summary is missing, so scope alignment cannot be confirmed.',
+      '缺少 Issue 任務範圍或 PR 摘要，因此無法確認變更是否對齊任務範圍。',
     )
   }
 
@@ -84,7 +84,7 @@ function evaluateScopeAlignment(input: ReturnType<typeof normalizeInput>): RuleE
       'danger',
       -analyzerConfig.deductions.scopeConflict,
       false,
-      `PR content appears to touch out-of-scope areas from the Issue: ${formatList(forbiddenMatches)}.`,
+      `PR 內容疑似碰到 Issue 明確排除的範圍：${formatList(forbiddenMatches)}。`,
     )
   }
 
@@ -94,7 +94,7 @@ function evaluateScopeAlignment(input: ReturnType<typeof normalizeInput>): RuleE
       'warning',
       -10,
       false,
-      `PR Summary includes broad-change signals that may need review: ${formatList(broadMatches)}.`,
+      `PR 摘要包含需要人工確認的廣泛變更訊號：${formatList(broadMatches)}。`,
     )
   }
 
@@ -103,7 +103,7 @@ function evaluateScopeAlignment(input: ReturnType<typeof normalizeInput>): RuleE
     'pass',
     0,
     true,
-    'PR Summary appears aligned with the Issue scope.',
+    'PR 摘要看起來符合 Issue 任務範圍。',
   )
 }
 
@@ -119,7 +119,7 @@ function evaluateChangedFiles(input: ReturnType<typeof normalizeInput>): RuleEva
       'warning',
       -analyzerConfig.deductions.missingChangedFiles,
       false,
-      'Changed Files is empty, so file scope cannot be verified.',
+      '變更檔案清單為空，因此無法確認檔案範圍。',
     )
   }
 
@@ -129,10 +129,10 @@ function evaluateChangedFiles(input: ReturnType<typeof normalizeInput>): RuleEva
       'danger',
       -analyzerConfig.deductions.riskyChangedFiles,
       false,
-      `Changed files include risky or out-of-scope paths: ${formatList([
+      `變更檔案包含高風險或超出範圍的路徑：${formatList([
         ...riskyFiles,
         ...forbiddenMatches,
-      ])}.`,
+      ])}。`,
     )
   }
 
@@ -141,7 +141,7 @@ function evaluateChangedFiles(input: ReturnType<typeof normalizeInput>): RuleEva
     'pass',
     0,
     true,
-    'Changed files do not include obvious package, deployment, auth, service, or local config paths.',
+    '變更檔案未出現明顯的 package、deployment、auth、service 或本機設定路徑。',
   )
 }
 
@@ -159,7 +159,7 @@ function evaluateDependencyRisk(input: ReturnType<typeof normalizeInput>): RuleE
       'danger',
       -analyzerConfig.deductions.dependencyWarning,
       false,
-      'package.json or package-lock.json appears in Changed Files.',
+      '變更檔案包含 package.json 或 package-lock.json。',
     )
   }
 
@@ -169,7 +169,7 @@ function evaluateDependencyRisk(input: ReturnType<typeof normalizeInput>): RuleE
       'warning',
       -analyzerConfig.deductions.dependencyWarning,
       false,
-      `Dependency Changes includes package-related signals: ${formatList(dependencyMatches)}.`,
+      `Dependency 變更說明包含 package 相關訊號：${formatList(dependencyMatches)}。`,
     )
   }
 
@@ -178,7 +178,7 @@ function evaluateDependencyRisk(input: ReturnType<typeof normalizeInput>): RuleE
     'pass',
     0,
     true,
-    'No dependency or package-file change is reported.',
+    '未回報 dependency 或 package 檔案變更。',
   )
 }
 
@@ -191,7 +191,7 @@ function evaluateSecretRisk(input: ReturnType<typeof normalizeInput>): RuleEvalu
       'danger',
       -analyzerConfig.deductions.secretRisk,
       false,
-      `Secret-like or local config signals were detected: ${formatList(secretMatches)}.`,
+      `偵測到疑似 secret 或本機設定訊號：${formatList(secretMatches)}。`,
     )
   }
 
@@ -200,7 +200,7 @@ function evaluateSecretRisk(input: ReturnType<typeof normalizeInput>): RuleEvalu
     'pass',
     0,
     true,
-    'No .env, token, credential, password, or API-key-like signal was detected.',
+    '未偵測到 .env、token、credential、password 或 API key 類型訊號。',
   )
 }
 
@@ -215,7 +215,7 @@ function evaluateTestCoverage(input: ReturnType<typeof normalizeInput>): RuleEva
       'warning',
       -analyzerConfig.deductions.missingTests,
       false,
-      'Test Result says tests/build were not run or not verified.',
+      'build / test 結果顯示尚未執行或尚未驗證。',
     )
   }
 
@@ -225,7 +225,7 @@ function evaluateTestCoverage(input: ReturnType<typeof normalizeInput>): RuleEva
       'danger',
       -analyzerConfig.deductions.failedTests,
       false,
-      'Test Result includes failed/error signals.',
+      'build / test 結果包含 failed 或 error 訊號。',
     )
   }
 
@@ -235,7 +235,7 @@ function evaluateTestCoverage(input: ReturnType<typeof normalizeInput>): RuleEva
       'pass',
       0,
       true,
-      'Test Result includes passing or verified build/test signals.',
+      'build / test 結果包含通過或已驗證訊號。',
     )
   }
 
@@ -244,7 +244,7 @@ function evaluateTestCoverage(input: ReturnType<typeof normalizeInput>): RuleEva
     'warning',
     -analyzerConfig.deductions.missingTests,
     false,
-    'Test Result is present but does not clearly show passing verification.',
+    'build / test 結果已提供，但沒有清楚顯示通過驗證。',
   )
 }
 
@@ -298,12 +298,12 @@ function buildReviewSummary(
 ) {
   const riskyRules = rules.filter((rule) => rule.checkResult.status !== 'pass')
   if (riskyRules.length === 0) {
-    return `${riskLabel}: score ${score}. The PR appears tightly scoped, avoids dependency/local config risk, and includes verification. Suggested action: ${suggestedAction}.`
+    return `${riskLabel}：分數 ${score}。這個 PR 看起來緊扣 Issue 任務範圍，未出現 dependency / 本機設定風險，且包含驗證結果。建議處理方式：${suggestedAction}。`
   }
 
-  return `${riskLabel}: score ${score}. Review needed for ${formatList(
+  return `${riskLabel}：分數 ${score}。需要人工確認的項目：${formatList(
     riskyRules.map((rule) => rule.checkResult.title),
-  )}. Suggested action: ${suggestedAction}.`
+  )}。建議處理方式：${suggestedAction}。`
 }
 
 function buildPrComment(
@@ -315,10 +315,10 @@ function buildPrComment(
   const riskyRules = rules.filter((rule) => rule.checkResult.status !== 'pass')
   const riskText =
     riskyRules.length > 0
-      ? `Review signals: ${formatList(riskyRules.map((rule) => rule.checkResult.title))}.`
-      : 'No major scope, dependency, secret, or test coverage risk was detected.'
+      ? `需要確認的訊號：${formatList(riskyRules.map((rule) => rule.checkResult.title))}。`
+      : '未偵測到明顯的任務範圍、dependency、secret 或 build / test 風險。'
 
-  return `Scope Guard result: ${riskLabel} / ${suggestedAction}. Score: ${score}. ${riskText}`
+  return `Scope Guard 結果：${riskLabel} / ${suggestedAction}。分數：${score}。${riskText}`
 }
 
 function findForbiddenMatches(issueSpec: string, targetText: string) {

@@ -1,11 +1,11 @@
 <template>
   <section class="checker-page">
     <div class="checker-page__header">
-      <p class="checker-page__eyebrow">AI-assisted PR Scope Review</p>
+      <p class="checker-page__eyebrow">AI 輔助 PR 範圍審查</p>
       <div>
-        <h1>Scope 分析工作區</h1>
+        <h1>範圍檢查工作區</h1>
         <p>
-          貼上 Issue 與 PR 資訊，使用 Good PR / Risky PR demo 驗證 analyzer、Pinia state 與 latest-only persistence。
+          貼上 Issue 與 PR 資訊，載入良好或高風險 PR 範例，檢查 analyzer、Pinia state 與只保存最新分析的結果。
         </p>
       </div>
     </div>
