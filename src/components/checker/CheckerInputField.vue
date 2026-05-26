@@ -6,8 +6,12 @@
       :model-value="modelValue"
       :placeholder="placeholder"
       :rows="rows"
+      :aria-describedby="helper ? `${id}-helper` : undefined"
       @update:model-value="$emit('update:modelValue', $event)"
     />
+    <p v-if="helper" :id="`${id}-helper`" class="checker-input-field__helper">
+      {{ helper }}
+    </p>
   </div>
 </template>
 
@@ -20,10 +24,12 @@ withDefaults(
     label: string
     modelValue: string
     placeholder?: string
+    helper?: string
     rows?: number
   }>(),
   {
     placeholder: '',
+    helper: '',
     rows: 5,
   },
 )
@@ -43,5 +49,12 @@ defineEmits<{
   color: var(--color-text);
   font-size: 0.92rem;
   font-weight: 800;
+}
+
+.checker-input-field__helper {
+  margin: -2px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.84rem;
+  line-height: 1.55;
 }
 </style>
