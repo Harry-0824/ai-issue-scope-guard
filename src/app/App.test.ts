@@ -141,12 +141,14 @@ describe('App routing', () => {
     expect(screen.getByText('100')).toBeInTheDocument()
     expect(screen.getAllByText('低風險').length).toBeGreaterThan(0)
     expect(screen.getAllByText('可進入審查').length).toBeGreaterThan(0)
-    expect(screen.getByRole('heading', { name: '已通過' })).toBeInTheDocument()
     expect(
-      screen.queryByRole('heading', { name: '高風險' }),
+      screen.getByRole('heading', { name: /^已通過\s+\d+$/ }),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByRole('heading', { name: /^高風險\s+\d+$/ }),
     ).not.toBeInTheDocument()
     expect(
-      screen.queryByRole('heading', { name: '需人工確認' }),
+      screen.queryByRole('heading', { name: /^需人工確認\s+\d+$/ }),
     ).not.toBeInTheDocument()
     expect(screen.getByText('審查結論')).toBeInTheDocument()
     expect(
@@ -170,7 +172,21 @@ describe('App routing', () => {
     )
       .getAllByRole('heading', { level: 3 })
       .map((heading) => heading.textContent)
-    expect(mediumRiskGroupTitles).toEqual(['需人工確認', '已通過'])
+    expect(
+      mediumRiskGroupTitles.map((title) => title?.replace(/\s+\d+$/, '')),
+    ).toEqual(['需人工確認', '已通過'])
+
+    for (const heading of within(
+      screen.getByTestId('check-results-groups'),
+    ).getAllByRole('heading', { level: 3 })) {
+      const parsedCount = Number(
+        heading.textContent?.match(/(\d+)$/)?.[1] ?? '0',
+      )
+      const renderedItems = heading
+        .closest('section')
+        ?.querySelectorAll('article').length
+      expect(parsedCount).toBe(renderedItems)
+    }
     expect(screen.getByText('部分檢查項目需要進一步確認。')).toBeInTheDocument()
     expect(
       screen.getByText(
@@ -200,9 +216,11 @@ describe('App routing', () => {
     )
       .getAllByRole('heading', { level: 3 })
       .map((heading) => heading.textContent)
-    expect(highRiskGroupTitles).toEqual(['高風險', '需人工確認'])
     expect(
-      screen.queryByRole('heading', { name: '已通過' }),
+      highRiskGroupTitles.map((title) => title?.replace(/\s+\d+$/, '')),
+    ).toEqual(['高風險', '需人工確認'])
+    expect(
+      screen.queryByRole('heading', { name: /^已通過\s+\d+$/ }),
     ).not.toBeInTheDocument()
     expect(
       screen.getByText('分析結果顯示可能有高風險或超出 Issue 任務範圍的變更。'),

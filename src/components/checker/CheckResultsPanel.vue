@@ -23,7 +23,9 @@
         :key="group.status"
         class="check-results-panel__group"
       >
-        <h3 class="check-results-panel__group-title">{{ group.label }}</h3>
+        <h3 class="check-results-panel__group-title">
+          {{ group.label }} {{ group.items.length }}
+        </h3>
         <div class="check-results-panel__list">
           <CheckResultItem
             v-for="item in group.items"
