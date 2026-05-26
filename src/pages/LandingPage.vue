@@ -4,8 +4,8 @@
       <div class="landing-page__hero-copy">
         <h1 id="landing-title">AI Issue Scope Guard</h1>
         <p>
-          檢查 AI 產生的 PR 是否守住 GitHub Issue 任務範圍，讓 Codex / AI Agent 的實作可以被快速、
-          清楚、可重複地審查。
+          檢查 AI 產生的 PR 是否守住 GitHub Issue 任務範圍，讓 Codex / AI Agent
+          的實作可以被快速、 清楚、可重複地審查。
         </p>
         <div class="landing-page__hero-actions">
           <AppButton to="/checker">開始範圍檢查</AppButton>
@@ -51,7 +51,11 @@
         description="先把 AI PR 審查最容易漏掉的任務範圍訊號做成可掃描的結果。"
       />
       <div class="landing-page__features">
-        <AppCard v-for="feature in features" :key="feature.title" class="landing-page__card">
+        <AppCard
+          v-for="feature in features"
+          :key="feature.title"
+          class="landing-page__card"
+        >
           <AppBadge :tone="feature.tone">{{ feature.badge }}</AppBadge>
           <h3>{{ feature.title }}</h3>
           <p>{{ feature.description }}</p>
@@ -66,7 +70,11 @@
         description="這個工具放在 Issue-driven development 的審查階段，不取代審查者，也不自動抓 GitHub diff。"
       />
       <div class="landing-page__workflow">
-        <article v-for="(step, index) in workflowSteps" :key="step.title" class="landing-page__step">
+        <article
+          v-for="(step, index) in workflowSteps"
+          :key="step.title"
+          class="landing-page__step"
+        >
           <span>{{ String(index + 1).padStart(2, '0') }}</span>
           <h3>{{ step.title }}</h3>
           <p>{{ step.description }}</p>
@@ -81,7 +89,11 @@
         description="以下是未來可擴充方向，不代表 MVP 已經連接外部 provider、GitHub API 或 database。"
       />
       <div class="landing-page__roadmap">
-        <AppCard v-for="item in roadmap" :key="item.title" class="landing-page__roadmap-item">
+        <AppCard
+          v-for="item in roadmap"
+          :key="item.title"
+          class="landing-page__roadmap-item"
+        >
           <AppBadge>未來</AppBadge>
           <h3>{{ item.title }}</h3>
           <p>{{ item.description }}</p>
@@ -91,8 +103,8 @@
 
     <footer class="landing-page__footer">
       <p>
-        AI Issue Scope Guard 是 Vue 3 portfolio project，展示 Issue-scoped implementation、rule-based
-        analysis 與適合審查者回貼的 PR 評語流程。
+        AI Issue Scope Guard 是 Vue 3 portfolio project，展示 Issue-scoped
+        implementation、rule-based analysis 與適合審查者回貼的 PR 評語流程。
       </p>
     </footer>
   </section>
@@ -117,44 +129,52 @@ const features: FeatureCard[] = [
     title: '範圍檢查',
     badge: 'Scope',
     tone: 'success',
-    description: '對照 Issue 任務範圍、PR 摘要與變更檔案，找出可能超出任務範圍的訊號。',
+    description:
+      '對照 Issue 任務範圍、PR 摘要與變更檔案，找出可能超出任務範圍的訊號。',
   },
   {
     title: '風險等級',
     badge: 'Risk',
     tone: 'warning',
-    description: '把分數映射成低 / 中 / 高風險，讓審查者先判斷要進入審查或要求修改。',
+    description:
+      '把分數映射成低 / 中 / 高風險，讓審查者先判斷要進入審查或要求修改。',
   },
   {
     title: '可複製的 PR 評語',
     badge: 'Comment',
     tone: 'success',
-    description: '產生簡短 PR 評語，方便回貼到 GitHub review thread，保留人工判斷的上下文。',
+    description:
+      '產生簡短 PR 評語，方便回貼到 GitHub review thread，保留人工判斷的上下文。',
   },
   {
     title: 'localStorage 本機保存',
     badge: 'Local',
     tone: 'success',
-    description: '只保存最後一次分析在瀏覽器 localStorage，不建立歷史紀錄、帳號或資料庫同步。',
+    description:
+      '只保存最後一次分析在瀏覽器 localStorage，不建立歷史紀錄、帳號或資料庫同步。',
   },
 ]
 
 const workflowSteps = [
   {
     title: 'Issue 任務範圍',
-    description: '先由 GitHub Issue 定義 task source of truth、驗收條件與不包含項目。',
+    description:
+      '先由 GitHub Issue 定義 task source of truth、驗收條件與不包含項目。',
   },
   {
     title: 'Codex / AI Agent 實作',
-    description: 'AI coding agent 按 Issue scope 實作，避免順手重構或加上未要求的功能。',
+    description:
+      'AI coding agent 按 Issue scope 實作，避免順手重構或加上未要求的功能。',
   },
   {
     title: 'PR 審查',
-    description: '審查者檢查變更檔案、摘要、tests 與 dependency changes 是否符合 Issue。',
+    description:
+      '審查者檢查變更檔案、摘要、tests 與 dependency changes 是否符合 Issue。',
   },
   {
     title: 'Scope Guard 範圍檢查',
-    description: '把手動貼上的資訊轉成分數、風險、建議處理方式、規則細節與可複製的 PR 評語。',
+    description:
+      '把手動貼上的資訊轉成分數、風險、建議處理方式、規則細節與可複製的 PR 評語。',
   },
 ]
 
@@ -169,7 +189,8 @@ const roadmap = [
   },
   {
     title: 'OpenAI',
-    description: '若未來接 AI API，需另開 Issue 並使用安全的 backend/proxy 設計。',
+    description:
+      '若未來接 AI API，需另開 Issue 並使用安全的 backend/proxy 設計。',
   },
   {
     title: 'Gemini',
@@ -177,7 +198,8 @@ const roadmap = [
   },
   {
     title: '資料庫同步準備',
-    description: '目前只保存 local latest analysis；database sync 需要獨立 Issue。',
+    description:
+      '目前只保存 local latest analysis；database sync 需要獨立 Issue。',
   },
 ]
 </script>
@@ -280,7 +302,7 @@ const roadmap = [
   overflow: auto;
   margin: 0;
   color: var(--color-text);
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
   font-size: 0.84rem;
   white-space: pre-wrap;
 }
@@ -343,7 +365,7 @@ const roadmap = [
 
 .landing-page__step span {
   color: var(--color-accent-strong);
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
   font-size: 0.84rem;
   font-weight: 800;
 }

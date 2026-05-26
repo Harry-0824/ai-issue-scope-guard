@@ -23,7 +23,9 @@ describe('analysisStore', () => {
 
     store.runAnalyzer()
     expect(store.activeResult?.riskLevel).toBe('low')
-    expect(localStorage.getItem(LAST_ANALYSIS_STORAGE_KEY)).toContain('Manual PR summary update.')
+    expect(localStorage.getItem(LAST_ANALYSIS_STORAGE_KEY)).toContain(
+      'Manual PR summary update.',
+    )
   })
 
   it('restores the latest saved analysis into store state', () => {

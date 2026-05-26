@@ -7,7 +7,11 @@
       </AppButton>
     </div>
 
-    <div class="copyable-pr-comment__mode-switch" role="group" aria-label="PR 評語版本">
+    <div
+      class="copyable-pr-comment__mode-switch"
+      role="group"
+      aria-label="PR 評語版本"
+    >
       <AppButton
         v-for="mode in commentModes"
         :key="mode.value"
@@ -20,7 +24,9 @@
     </div>
 
     <pre>{{ activeComment || '尚未產生可複製的 PR 評語。' }}</pre>
-    <p v-if="copyStatus" class="copyable-pr-comment__status">{{ copyStatus }}</p>
+    <p v-if="copyStatus" class="copyable-pr-comment__status">
+      {{ copyStatus }}
+    </p>
   </AppCard>
 </template>
 
@@ -30,7 +36,11 @@ import { computed, ref, watch } from 'vue'
 import AppButton from '@/components/ui/AppButton.vue'
 import AppCard from '@/components/ui/AppCard.vue'
 import SectionHeader from '@/components/ui/SectionHeader.vue'
-import type { AnalysisResult, CheckResultStatus, SuggestedActionKey } from '@/types/analysis'
+import type {
+  AnalysisResult,
+  CheckResultStatus,
+  SuggestedActionKey,
+} from '@/types/analysis'
 
 type CommentMode = 'short' | 'detailed'
 
@@ -147,7 +157,7 @@ function formatNextStep(action: SuggestedActionKey) {
   padding: 16px;
   color: var(--color-text);
   background: rgba(5, 10, 22, 0.58);
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
   font-size: 0.86rem;
   line-height: 1.55;
   white-space: pre-wrap;

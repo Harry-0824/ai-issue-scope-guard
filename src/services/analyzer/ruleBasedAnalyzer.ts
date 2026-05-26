@@ -1,5 +1,10 @@
 import { analyzerConfig, type AnalyzerRuleId } from './analyzerConfig'
-import type { AnalyzerInput, AnalysisCheckResult, AnalysisResult, AnalysisRuleDetail } from './analyzer.types'
+import type {
+  AnalyzerInput,
+  AnalysisCheckResult,
+  AnalysisResult,
+  AnalysisRuleDetail,
+} from './analyzer.types'
 
 type RuleEvaluation = {
   checkResult: AnalysisCheckResult
@@ -26,7 +31,8 @@ export function analyzeScope(input: AnalyzerInput): AnalysisResult {
 
   // Analyzer 採用「100 分起扣」的 deterministic rule flow，讓每個扣分原因都能對應到 ruleDetails。
   const score = clampScore(
-    analyzerConfig.baseScore + rules.reduce((total, rule) => total + rule.ruleDetail.impact, 0),
+    analyzerConfig.baseScore +
+      rules.reduce((total, rule) => total + rule.ruleDetail.impact, 0),
   )
   const risk = mapScoreToRisk(score)
 
@@ -34,8 +40,18 @@ export function analyzeScope(input: AnalyzerInput): AnalysisResult {
     score,
     ...risk,
     checkResults: rules.map((rule) => rule.checkResult),
-    reviewSummary: buildReviewSummary(score, risk.riskLabel, risk.suggestedAction, rules),
-    prComment: buildPrComment(score, risk.riskLabel, risk.suggestedAction, rules),
+    reviewSummary: buildReviewSummary(
+      score,
+      risk.riskLabel,
+      risk.suggestedAction,
+      rules,
+    ),
+    prComment: buildPrComment(
+      score,
+      risk.riskLabel,
+      risk.suggestedAction,
+      rules,
+    ),
     ruleDetails: rules.map((rule) => rule.ruleDetail),
   }
 }
@@ -64,9 +80,17 @@ function normalizeInput(input: AnalyzerInput) {
   }
 }
 
-function evaluateScopeAlignment(input: ReturnType<typeof normalizeInput>): RuleEvaluation {
-  const forbiddenMatches = findForbiddenMatches(input.issueSpec, `${input.prSummary}\n${input.changedFiles}`)
-  const broadMatches = findMatches(input.prSummary, analyzerConfig.broadChangeTerms)
+function evaluateScopeAlignment(
+  input: ReturnType<typeof normalizeInput>,
+): RuleEvaluation {
+  const forbiddenMatches = findForbiddenMatches(
+    input.issueSpec,
+    `${input.prSummary}\n${input.changedFiles}`,
+  )
+  const broadMatches = findMatches(
+    input.prSummary,
+    analyzerConfig.broadChangeTerms,
+  )
 
   if (!input.issueSpec || !input.prSummary) {
     return createRule(
@@ -107,11 +131,23 @@ function evaluateScopeAlignment(input: ReturnType<typeof normalizeInput>): RuleE
   )
 }
 
-function evaluateChangedFiles(input: ReturnType<typeof normalizeInput>): RuleEvaluation {
+function evaluateChangedFiles(
+  input: ReturnType<typeof normalizeInput>,
+): RuleEvaluation {
   const riskyFiles = input.changedFileList.filter((file) =>
-    includesAny(file, ['package.json', 'package-lock.json', 'netlify.toml', '.env', 'auth', 'service']),
+    includesAny(file, [
+      'package.json',
+      'package-lock.json',
+      'netlify.toml',
+      '.env',
+      'auth',
+      'service',
+    ]),
   )
-  const forbiddenMatches = findForbiddenMatches(input.issueSpec, input.changedFiles)
+  const forbiddenMatches = findForbiddenMatches(
+    input.issueSpec,
+    input.changedFiles,
+  )
 
   if (input.changedFileList.length === 0) {
     return createRule(
@@ -145,13 +181,22 @@ function evaluateChangedFiles(input: ReturnType<typeof normalizeInput>): RuleEva
   )
 }
 
-function evaluateDependencyRisk(input: ReturnType<typeof normalizeInput>): RuleEvaluation {
+function evaluateDependencyRisk(
+  input: ReturnType<typeof normalizeInput>,
+): RuleEvaluation {
   const dependencyText = `${input.dependencyChanges}\n${input.changedFiles}`
-  const hasPackageFile = includesAny(input.changedFiles, ['package.json', 'package-lock.json'])
-  const saysNoDependencies = /\b(no|none|not)\b.+\b(dependency|dependencies|package|packages)\b/i.test(
-    input.dependencyChanges,
+  const hasPackageFile = includesAny(input.changedFiles, [
+    'package.json',
+    'package-lock.json',
+  ])
+  const saysNoDependencies =
+    /\b(no|none|not)\b.+\b(dependency|dependencies|package|packages)\b/i.test(
+      input.dependencyChanges,
+    )
+  const dependencyMatches = findMatches(
+    dependencyText,
+    analyzerConfig.dependencyTerms,
   )
-  const dependencyMatches = findMatches(dependencyText, analyzerConfig.dependencyTerms)
 
   if (hasPackageFile) {
     return createRule(
@@ -182,7 +227,9 @@ function evaluateDependencyRisk(input: ReturnType<typeof normalizeInput>): RuleE
   )
 }
 
-function evaluateSecretRisk(input: ReturnType<typeof normalizeInput>): RuleEvaluation {
+function evaluateSecretRisk(
+  input: ReturnType<typeof normalizeInput>,
+): RuleEvaluation {
   const secretMatches = findMatches(input.prText, analyzerConfig.secretTerms)
 
   if (secretMatches.length > 0) {
@@ -204,10 +251,21 @@ function evaluateSecretRisk(input: ReturnType<typeof normalizeInput>): RuleEvalu
   )
 }
 
-function evaluateTestCoverage(input: ReturnType<typeof normalizeInput>): RuleEvaluation {
-  const hasFailedTests = includesAny(input.testResult, analyzerConfig.failedTestTerms)
-  const hasMissingTests = includesAny(input.testResult, analyzerConfig.missingTestTerms)
-  const hasPassingSignal = includesAny(input.testResult, analyzerConfig.passTestTerms)
+function evaluateTestCoverage(
+  input: ReturnType<typeof normalizeInput>,
+): RuleEvaluation {
+  const hasFailedTests = includesAny(
+    input.testResult,
+    analyzerConfig.failedTestTerms,
+  )
+  const hasMissingTests = includesAny(
+    input.testResult,
+    analyzerConfig.missingTestTerms,
+  )
+  const hasPassingSignal = includesAny(
+    input.testResult,
+    analyzerConfig.passTestTerms,
+  )
 
   if (!input.testResult || hasMissingTests) {
     return createRule(
@@ -273,13 +331,15 @@ function createRule(
 }
 
 function mapScoreToRisk(score: number) {
-  const fallbackThreshold = analyzerConfig.riskThresholds[analyzerConfig.riskThresholds.length - 1]
+  const fallbackThreshold =
+    analyzerConfig.riskThresholds[analyzerConfig.riskThresholds.length - 1]
   if (!fallbackThreshold) {
     throw new Error('Analyzer risk thresholds must include at least one item.')
   }
 
   const threshold =
-    analyzerConfig.riskThresholds.find((item) => score >= item.minScore) ?? fallbackThreshold
+    analyzerConfig.riskThresholds.find((item) => score >= item.minScore) ??
+    fallbackThreshold
 
   return {
     riskLevel: threshold.riskLevel,
@@ -346,7 +406,10 @@ function includesAny(text: string, terms: readonly string[]) {
 }
 
 function clampScore(score: number) {
-  return Math.min(analyzerConfig.scoreBounds.max, Math.max(analyzerConfig.scoreBounds.min, score))
+  return Math.min(
+    analyzerConfig.scoreBounds.max,
+    Math.max(analyzerConfig.scoreBounds.min, score),
+  )
 }
 
 function formatList(items: string[]) {

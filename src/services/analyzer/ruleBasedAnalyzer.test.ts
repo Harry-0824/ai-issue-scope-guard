@@ -31,8 +31,12 @@ describe('analyzeScope', () => {
     expect(result.riskLabel).toBe('高風險')
     expect(result.riskTone).toBe('danger')
     expect(result.suggestedAction).toBe('建議要求修改')
-    expect(result.checkResults.find((item) => item.id === 'secret-risk')?.status).toBe('danger')
-    expect(result.checkResults.find((item) => item.id === 'dependency-risk')?.status).toBe('danger')
+    expect(
+      result.checkResults.find((item) => item.id === 'secret-risk')?.status,
+    ).toBe('danger')
+    expect(
+      result.checkResults.find((item) => item.id === 'dependency-risk')?.status,
+    ).toBe('danger')
   })
 
   it('deducts score when tests are missing', () => {
@@ -42,7 +46,9 @@ describe('analyzeScope', () => {
     })
 
     expect(result.score).toBeLessThan(90)
-    expect(result.checkResults.find((item) => item.id === 'test-coverage')?.status).toBe('warning')
+    expect(
+      result.checkResults.find((item) => item.id === 'test-coverage')?.status,
+    ).toBe('warning')
   })
 
   it('deducts score when dependency changes are present', () => {
@@ -52,9 +58,9 @@ describe('analyzeScope', () => {
     })
 
     expect(result.score).toBeLessThan(90)
-    expect(result.checkResults.find((item) => item.id === 'dependency-risk')?.status).toBe(
-      'warning',
-    )
+    expect(
+      result.checkResults.find((item) => item.id === 'dependency-risk')?.status,
+    ).toBe('warning')
   })
 
   it('does not treat secret guidance in the Issue as a committed secret', () => {
@@ -63,12 +69,15 @@ describe('analyzeScope', () => {
       issueSpec: `${checkerExamples.good.issueSpec} Do not commit .env.local or token files.`,
     })
 
-    expect(result.checkResults.find((item) => item.id === 'secret-risk')?.status).toBe('pass')
+    expect(
+      result.checkResults.find((item) => item.id === 'secret-risk')?.status,
+    ).toBe('pass')
   })
 
   it('clamps the final score between 0 and 100 when many high-risk signals exist', () => {
     const result = analyzeScope({
-      issueSpec: 'Change one CTA label only. Do not change dependencies or deployment.',
+      issueSpec:
+        'Change one CTA label only. Do not change dependencies or deployment.',
       prSummary:
         'Refactored auth, rewired database access, changed deployment config, added package updates, and committed token handling.',
       changedFiles:

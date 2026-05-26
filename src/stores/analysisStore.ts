@@ -2,7 +2,11 @@ import { defineStore } from 'pinia'
 
 import { checkerExamples, emptyCheckerInput } from '@/data/checkerExamples'
 import { analyzeScope } from '@/services/analyzer'
-import { clearLastAnalysis, getLastAnalysis, saveLastAnalysis } from '@/services/persistence'
+import {
+  clearLastAnalysis,
+  getLastAnalysis,
+  saveLastAnalysis,
+} from '@/services/persistence'
 import type { AnalysisResult } from '@/types/analysis'
 import type { CheckerExampleKey, CheckerInput } from '@/types/checker'
 

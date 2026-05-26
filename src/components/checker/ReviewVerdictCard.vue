@@ -34,14 +34,19 @@ const props = defineProps<{
   result: AnalysisResult
 }>()
 
-const verdictCopy: Record<SuggestedActionKey, { reason: string; nextStep: string }> = {
+const verdictCopy: Record<
+  SuggestedActionKey,
+  { reason: string; nextStep: string }
+> = {
   'ready-to-review': {
-    reason: '目前未偵測到明顯的任務範圍、dependency、secret 或 build / test 風險。',
+    reason:
+      '目前未偵測到明顯的任務範圍、dependency、secret 或 build / test 風險。',
     nextStep: '進行人工確認後即可考慮 merge。',
   },
   'needs-manual-review': {
     reason: '部分檢查項目需要進一步確認。',
-    nextStep: '先檢查變更檔案、dependency 變更與 build / test 結果，再決定是否 merge。',
+    nextStep:
+      '先檢查變更檔案、dependency 變更與 build / test 結果，再決定是否 merge。',
   },
   'request-changes': {
     reason: '分析結果顯示可能有高風險或超出 Issue 任務範圍的變更。',

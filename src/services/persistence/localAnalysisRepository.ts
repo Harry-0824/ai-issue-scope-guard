@@ -24,13 +24,15 @@ export function clearLastAnalysis() {
   localStorage.removeItem(LAST_ANALYSIS_STORAGE_KEY)
 }
 
-function isLastAnalysisSnapshot(value: LastAnalysisSnapshot | null): value is LastAnalysisSnapshot {
+function isLastAnalysisSnapshot(
+  value: LastAnalysisSnapshot | null,
+): value is LastAnalysisSnapshot {
   return Boolean(
     value &&
-      typeof value === 'object' &&
-      value.input &&
-      typeof value.input.issueSpec === 'string' &&
-      value.result &&
-      typeof value.result.score === 'number',
+    typeof value === 'object' &&
+    value.input &&
+    typeof value.input.issueSpec === 'string' &&
+    value.result &&
+    typeof value.result.score === 'number',
   )
 }

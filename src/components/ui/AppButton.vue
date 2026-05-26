@@ -1,8 +1,18 @@
 <template>
-  <RouterLink v-if="to" class="app-button" :class="`app-button--${variant}`" :to="to">
+  <RouterLink
+    v-if="to"
+    class="app-button"
+    :class="`app-button--${variant}`"
+    :to="to"
+  >
     <slot />
   </RouterLink>
-  <button v-else class="app-button" :class="`app-button--${variant}`" :type="type">
+  <button
+    v-else
+    class="app-button"
+    :class="`app-button--${variant}`"
+    :type="type"
+  >
     <slot />
   </button>
 </template>
@@ -52,7 +62,11 @@ withDefaults(
 
 .app-button--primary {
   border-color: rgba(92, 163, 255, 0.42);
-  background: linear-gradient(135deg, var(--color-accent-strong), var(--color-accent));
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-strong),
+    var(--color-accent)
+  );
   box-shadow: 0 16px 34px rgba(73, 116, 255, 0.28);
 }
 

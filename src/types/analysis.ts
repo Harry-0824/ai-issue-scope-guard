@@ -1,6 +1,9 @@
 export type RiskLevel = 'low' | 'medium' | 'high'
 
-export type SuggestedActionKey = 'ready-to-review' | 'needs-manual-review' | 'request-changes'
+export type SuggestedActionKey =
+  | 'ready-to-review'
+  | 'needs-manual-review'
+  | 'request-changes'
 
 export type AnalysisTone = 'success' | 'warning' | 'danger'
 
