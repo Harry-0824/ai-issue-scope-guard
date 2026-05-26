@@ -1,6 +1,6 @@
 <template>
   <footer class="app-footer">
-    <p>Vue 3 learning project for AI-assisted PR scope review.</p>
+    <p>Vue 3 練習專案，用於 AI 輔助開發流程中的 PR 任務範圍檢查。</p>
   </footer>
 </template>
 

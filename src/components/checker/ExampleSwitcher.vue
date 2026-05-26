@@ -1,16 +1,16 @@
 <template>
-  <div class="example-switcher" aria-label="Demo examples">
+  <div class="example-switcher" aria-label="PR 範例">
     <AppButton
       :variant="selectedExample === 'good' ? 'primary' : 'secondary'"
       @click="$emit('load-example', 'good')"
     >
-      Good PR
+      良好 PR 範例
     </AppButton>
     <AppButton
       :variant="selectedExample === 'risky' ? 'primary' : 'secondary'"
       @click="$emit('load-example', 'risky')"
     >
-      Risky PR
+      高風險 PR 範例
     </AppButton>
   </div>
 </template>

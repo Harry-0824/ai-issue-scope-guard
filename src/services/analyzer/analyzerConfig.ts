@@ -17,26 +17,26 @@ export const analyzerConfig = {
     {
       minScore: 90,
       riskLevel: 'low',
-      riskLabel: 'Low Risk',
+      riskLabel: '低風險',
       riskTone: 'success',
       suggestedActionKey: 'ready-to-review',
-      suggestedAction: 'Ready to Review',
+      suggestedAction: '可進入審查',
     },
     {
       minScore: 70,
       riskLevel: 'medium',
-      riskLabel: 'Medium Risk',
+      riskLabel: '中風險',
       riskTone: 'warning',
       suggestedActionKey: 'needs-manual-review',
-      suggestedAction: 'Needs Manual Review',
+      suggestedAction: '需要人工確認',
     },
     {
       minScore: 0,
       riskLevel: 'high',
-      riskLabel: 'High Risk',
+      riskLabel: '高風險',
       riskTone: 'danger',
       suggestedActionKey: 'request-changes',
-      suggestedAction: 'Request Changes',
+      suggestedAction: '建議要求修改',
     },
   ] satisfies Array<{
     minScore: number

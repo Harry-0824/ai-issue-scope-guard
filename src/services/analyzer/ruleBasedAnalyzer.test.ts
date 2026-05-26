@@ -3,34 +3,34 @@ import { checkerExamples } from '@/data/checkerExamples'
 import { analyzeScope } from './ruleBasedAnalyzer'
 
 describe('analyzeScope', () => {
-  it('returns low risk for the Good PR example', () => {
+  it('returns low risk for the good PR example', () => {
     const result = analyzeScope(checkerExamples.good)
 
     expect(result.score).toBeGreaterThanOrEqual(90)
     expect(result.score).toBeLessThanOrEqual(100)
     expect(result.riskLevel).toBe('low')
-    expect(result.riskLabel).toBe('Low Risk')
+    expect(result.riskLabel).toBe('低風險')
     expect(result.riskTone).toBe('success')
-    expect(result.suggestedAction).toBe('Ready to Review')
+    expect(result.suggestedAction).toBe('可進入審查')
     expect(result.checkResults.map((item) => item.title)).toEqual([
-      'Scope Alignment',
-      'Changed Files',
-      'Dependency Risk',
-      'Secret Risk',
-      'Test Coverage Signal',
+      'Issue 任務範圍對齊',
+      '變更檔案範圍',
+      'Dependency 變更風險',
+      'Secret / 本機設定風險',
+      'build / test 驗證訊號',
     ])
-    expect(result.reviewSummary).toContain('Low Risk')
-    expect(result.prComment).toContain('Ready to Review')
+    expect(result.reviewSummary).toContain('低風險')
+    expect(result.prComment).toContain('可進入審查')
   })
 
-  it('returns high risk for the Risky PR example', () => {
+  it('returns high risk for the risky PR example', () => {
     const result = analyzeScope(checkerExamples.risky)
 
     expect(result.score).toBeLessThanOrEqual(69)
     expect(result.riskLevel).toBe('high')
-    expect(result.riskLabel).toBe('High Risk')
+    expect(result.riskLabel).toBe('高風險')
     expect(result.riskTone).toBe('danger')
-    expect(result.suggestedAction).toBe('Request Changes')
+    expect(result.suggestedAction).toBe('建議要求修改')
     expect(result.checkResults.find((item) => item.id === 'secret-risk')?.status).toBe('danger')
     expect(result.checkResults.find((item) => item.id === 'dependency-risk')?.status).toBe('danger')
   })
