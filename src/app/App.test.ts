@@ -81,6 +81,7 @@ describe('App routing', () => {
     await renderAppAt('/checker')
 
     expect(screen.getByRole('button', { name: '複製 PR 評語' })).toBeInTheDocument()
+    expect(screen.queryByText('審查結論')).not.toBeInTheDocument()
 
     await fireEvent.click(screen.getByRole('button', { name: '良好 PR 範例' }))
     expect((screen.getByLabelText('Issue 任務範圍') as HTMLTextAreaElement).value).toContain('Issue #12')
@@ -88,11 +89,23 @@ describe('App routing', () => {
     await fireEvent.click(screen.getByRole('button', { name: '開始分析' }))
     expect(screen.getByText('100')).toBeInTheDocument()
     expect(screen.getAllByText('低風險').length).toBeGreaterThan(0)
-    expect(screen.getByText('可進入審查')).toBeInTheDocument()
+    expect(screen.getAllByText('可進入審查').length).toBeGreaterThan(0)
+    expect(screen.getByText('審查結論')).toBeInTheDocument()
+    expect(screen.getByText('目前未偵測到明顯的任務範圍、dependency、secret 或 build / test 風險。')).toBeInTheDocument()
+    expect(screen.getByText('進行人工確認後即可考慮 merge。')).toBeInTheDocument()
+
+    await fireEvent.update(screen.getByLabelText('build / test 結果'), 'Tests were not run.')
+    await fireEvent.click(screen.getByRole('button', { name: '開始分析' }))
+    expect(screen.getAllByText('中風險').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('需要人工確認').length).toBeGreaterThan(0)
+    expect(screen.getByText('部分檢查項目需要進一步確認。')).toBeInTheDocument()
+    expect(
+      screen.getByText('先檢查變更檔案、dependency 變更與 build / test 結果，再決定是否 merge。'),
+    ).toBeInTheDocument()
 
     await fireEvent.click(screen.getByRole('button', { name: '複製 PR 評語' }))
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-      expect.stringContaining('低風險 / 可進入審查'),
+      expect.stringContaining('中風險 / 需要人工確認'),
     )
     expect(screen.getByText('已複製 PR 評語。')).toBeInTheDocument()
 
@@ -104,10 +117,15 @@ describe('App routing', () => {
     await fireEvent.click(screen.getByRole('button', { name: '開始分析' }))
     expect(screen.getByText('0')).toBeInTheDocument()
     expect(screen.getAllByText('高風險').length).toBeGreaterThan(0)
-    expect(screen.getByText('建議要求修改')).toBeInTheDocument()
+    expect(screen.getAllByText('建議要求修改').length).toBeGreaterThan(0)
+    expect(screen.getByText('分析結果顯示可能有高風險或超出 Issue 任務範圍的變更。')).toBeInTheDocument()
+    expect(
+      screen.getByText('要求 Codex 移除 out-of-scope changes，或拆成新的 Issue / PR。'),
+    ).toBeInTheDocument()
 
     await fireEvent.click(screen.getByRole('button', { name: '清除' }))
     expect((screen.getByLabelText('Issue 任務範圍') as HTMLTextAreaElement).value).toBe('')
     expect(screen.getByText('請先載入範例或開始分析')).toBeInTheDocument()
+    expect(screen.queryByText('審查結論')).not.toBeInTheDocument()
   })
 })
