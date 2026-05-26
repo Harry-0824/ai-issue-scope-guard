@@ -137,4 +137,34 @@ describe('App routing', () => {
     expect(screen.getByText('請先載入範例或開始分析')).toBeInTheDocument()
     expect(screen.queryByText('審查結論')).not.toBeInTheDocument()
   })
+
+  it('switches PR comment modes and copies the selected comment', async () => {
+    await renderAppAt('/checker')
+
+    await fireEvent.click(screen.getByRole('button', { name: '良好 PR 範例' }))
+    await fireEvent.click(screen.getByRole('button', { name: '開始分析' }))
+
+    expect(screen.getByRole('button', { name: '簡短版' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: '詳細版' })).toHaveAttribute('aria-pressed', 'false')
+
+    await fireEvent.click(screen.getByRole('button', { name: '詳細版' }))
+
+    expect(screen.getByRole('button', { name: '簡短版' })).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getByRole('button', { name: '詳細版' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByText(/## Scope Guard Review/)).toBeInTheDocument()
+    expect(screen.getByText(/主要檢查結果：/)).toBeInTheDocument()
+
+    await fireEvent.click(screen.getByRole('button', { name: '複製 PR 評語' }))
+
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      expect.stringContaining('## Scope Guard Review'),
+    )
+
+    await fireEvent.click(screen.getByRole('button', { name: '簡短版' }))
+    await fireEvent.click(screen.getByRole('button', { name: '複製 PR 評語' }))
+
+    expect(navigator.clipboard.writeText).toHaveBeenLastCalledWith(
+      expect.not.stringContaining('## Scope Guard Review'),
+    )
+  })
 })

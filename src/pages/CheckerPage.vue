@@ -26,6 +26,7 @@
         <ReviewSummaryCard :summary="activeResult?.reviewSummary ?? ''" />
         <CopyablePrComment
           :comment="activeResult?.prComment ?? ''"
+          :result="activeResult"
           :copy-status="copyStatus"
           @copy-comment="copyPrComment"
         />
@@ -77,13 +78,13 @@ function clearCurrentState() {
   copyStatus.value = ''
 }
 
-async function copyPrComment() {
-  if (!activeResult.value?.prComment) {
+async function copyPrComment(comment: string) {
+  if (!comment) {
     copyStatus.value = '請先產生分析結果。'
     return
   }
 
-  await navigator.clipboard.writeText(activeResult.value.prComment)
+  await navigator.clipboard.writeText(comment)
   copyStatus.value = '已複製 PR 評語。'
 }
 </script>
