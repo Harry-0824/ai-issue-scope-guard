@@ -13,6 +13,15 @@ Codex must read and follow this file before making changes in this repository.
 - Design direction: dark, premium AI tool, developer-focused, blue / purple accent, desktop first
 - Main goal: help users manually paste Issue / PR information and check whether AI-generated PR changes stay within the original Issue scope
 
+## Stable Maintenance Mode
+
+This repository is currently in stable maintenance mode.
+
+- Preserve current stable behavior by default.
+- Only change behavior when the current Issue explicitly requests it.
+- Treat normal work as small maintenance updates, docs updates, UX polish, or bug fixes.
+- Do not add new features, broad redesigns, or project-wide restructuring unless a specific Issue explicitly asks for it.
+
 ## Core Workflow
 
 The intended user flow is:
@@ -60,11 +69,16 @@ Do not make these technology changes unless a future GitHub Issue explicitly req
 ## Development Rules
 
 - Follow the current GitHub Issue only.
+- Start from the Issue `Suggested Files`.
 - One Issue should solve one task only.
 - One Issue = one branch = one PR.
+- Keep diffs minimal and reviewable.
+- Preserve existing behavior unless the current Issue explicitly requests a behavior change.
 - Do not perform broad refactors unless explicitly requested.
+- Do not perform broad redesigns or project restructuring unless explicitly requested.
 - Do not modify unrelated files.
 - Do not introduce unnecessary dependencies.
+- Do not modify `package.json` or lockfiles unless the current Issue explicitly requires dependency or script changes.
 - Do not commit `.env`, API keys, secrets, tokens, or local config.
 - Do not update portfolio repo from this repo.
 - Do not update Obsidian from this repo.
@@ -299,6 +313,13 @@ Do not hardcode large example payloads directly inside Vue components.
 
 ## Testing Rules
 
+Validation should match Issue scope and change type.
+
+- For docs-only changes, do docs-only validation:
+  - confirm final diff only includes intended docs files
+  - no build/test command is required unless the Issue explicitly asks
+- For code changes, run only the narrowest relevant checks requested by the Issue or needed for safety
+
 Use:
 
 - Vitest
@@ -376,69 +397,21 @@ unless explicitly requested.
 Before opening a PR, Codex should verify:
 
 - The PR follows the current Issue.
+- The implementation started from the Issue `Suggested Files`.
+- The diff is minimal for the task.
+- Existing behavior is preserved unless explicitly changed by the Issue.
 - No unrelated files were modified.
 - No broad refactor was performed.
 - No unnecessary dependency was added.
+- No `package.json` or lockfile changes were made unless explicitly required by the Issue.
 - No secrets or local config were touched.
 - Build/test commands were run or clearly reported.
 - Any incomplete work is clearly stated in the PR summary.
 - If a new task is discovered, propose a new Issue instead of implementing it in the same PR.
 
-## Current MVP Roadmap
+## Roadmap Status
 
-### Phase 1: Bootstrap
+The previous MVP roadmap is historical context only.
 
-- Create Vue 3 project
-- Add router
-- Add Pinia
-- Add basic layout
-- Add pages
-- Add `AGENTS.md`
-- Confirm build / test
-
-### Phase 2: Checker UI
-
-- Implement `/checker` dark UI from Figma
-- Add manual input panel
-- Add analysis result panel
-- Add example switcher
-- Add basic Analyze button behavior
-- Add Copy PR Comment button
-
-### Phase 3: Analyzer
-
-- Implement rule-based analyzer
-- Calculate score / risk / action
-- Generate check results
-- Generate rule details
-- Add analyzer tests
-
-### Phase 4: State + Persistence
-
-- Add Pinia `analysisStore`
-- Integrate analyzer
-- Integrate localStorage last analysis
-
-### Phase 5: Rules Page
-
-- Implement `/rules`
-- Explain score logic
-- Explain risk mapping
-- Explain MVP limitations
-- Explain future roadmap
-
-### Phase 6: Landing Page
-
-- Implement `/`
-- Product introduction
-- workflow
-- feature cards
-- CTA to `/checker`
-
-### Phase 7: Tests + Deployment
-
-- Add standard tests
-- Confirm build
-- Add `netlify.toml`
-- Update README
-- Deploy to Netlify manually outside Codex
+- Do not use historical roadmap phases as implicit implementation scope.
+- Use only the current GitHub Issue as the source of truth for new work.
