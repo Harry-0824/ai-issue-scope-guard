@@ -239,6 +239,24 @@ describe('App routing', () => {
     expect(screen.queryByText('審查結論')).not.toBeInTheDocument()
   })
 
+  it('loads the medium-risk example data and displays an intermediate score', async () => {
+    await renderAppAt('/checker')
+
+    await fireEvent.click(
+      screen.getByRole('button', { name: '中等風險 PR 範例' }),
+    )
+
+    expect(screen.getByDisplayValue(/Issue #24/)).toBeInTheDocument()
+    expect(screen.getByDisplayValue(/card spacing/)).toBeInTheDocument()
+    expect(
+      screen.getByDisplayValue(/Component tests were not run/),
+    ).toBeInTheDocument()
+
+    await fireEvent.click(screen.getByRole('button', { name: '開始分析' }))
+
+    expect(screen.getByText('78')).toBeInTheDocument()
+  })
+
   it('switches PR comment modes and copies the selected comment', async () => {
     await renderAppAt('/checker')
 

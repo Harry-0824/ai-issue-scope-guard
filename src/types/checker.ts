@@ -1,4 +1,4 @@
-export type CheckerExampleKey = 'good' | 'risky'
+export type CheckerExampleKey = 'good' | 'medium' | 'risky'
 
 export type CheckerInput = {
   issueSpec: string
