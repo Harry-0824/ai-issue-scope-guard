@@ -7,6 +7,12 @@
       良好 PR 範例
     </AppButton>
     <AppButton
+      :variant="selectedExample === 'medium' ? 'primary' : 'secondary'"
+      @click="$emit('load-example', 'medium')"
+    >
+      中等風險 PR 範例
+    </AppButton>
+    <AppButton
       :variant="selectedExample === 'risky' ? 'primary' : 'secondary'"
       @click="$emit('load-example', 'risky')"
     >

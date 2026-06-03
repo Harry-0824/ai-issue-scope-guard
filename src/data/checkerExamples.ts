@@ -22,6 +22,17 @@ export const checkerExamples: Record<CheckerExampleKey, CheckerInput> = {
       'npm run test -- DashboardEmptyState.test.ts passed. npm run build passed.',
     dependencyChanges: 'No dependency changes（無 dependency 變更）。',
   },
+  medium: {
+    issueSpec:
+      'Issue #24: 在 dashboard card 新增空狀態提示文字。Scope：只限 dashboard card empty state UI 與文案。Do not change routing, auth, data fetching, dependencies, or deployment settings.',
+    prSummary:
+      '已新增 dashboard card 空狀態提示文字，並調整 card spacing 與 empty state icon size。另順手 refactor dashboard card 的部分樣式命名，但未修改資料流或部署設定。',
+    changedFiles:
+      'src/components/dashboard/DashboardCard.vue\nsrc/components/dashboard/DashboardCard.module.css',
+    testResult:
+      'npm run build passed. Component tests were not run after the spacing and style naming cleanup.',
+    dependencyChanges: 'No dependency changes（無 dependency 變更）。',
+  },
   risky: {
     issueSpec:
       'Issue #18：在 pricing page hero 新增一個小型 CTA button。Scope：只限 pricing hero UI。Do not change auth, data fetching, dependencies, or deployment settings.',
